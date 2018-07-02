@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbDeviceConnection;
 import android.hardware.usb.UsbManager;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,6 +19,8 @@ import android.widget.TextView;
 import com.felhr.usbserial.UsbSerialDevice;
 import com.felhr.usbserial.UsbSerialInterface;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
@@ -32,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     UsbDevice device;
     UsbSerialDevice serialPort;
     UsbDeviceConnection connection;
-    String[] uris = new String[5];
+    String[] uris = new String[3];
     int actualVideo = 0;
     boolean deviceConnected = false;
 
@@ -95,9 +98,57 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+
+    //checks if external strorage is writable
+    public boolean isExternalStorageWritable(){
+        String state = Environment.getExternalStorageState();
+        if(Environment.MEDIA_MOUNTED.equals(state)){
+            return true;
+        }
+        return false;
+    }
+
+    //checks if external storage is available to at least read
+    public boolean isExternalStorageReadable(){
+        String state = Environment.getExternalStorageState();
+        if(Environment.MEDIA_MOUNTED.equals(state) ||
+                Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)){
+            return true;
+        }
+        return false;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //create logDirectories & file
+        if(isExternalStorageWritable()){
+            File appDirectory = new File(Environment.getExternalStorageDirectory() + "/MyPersonalAppFolder");
+            File logDirectory = new File(appDirectory+"/log");
+            File logFile = new File(logDirectory, "logcat" + System.currentTimeMillis() + ".txt");
+
+            //create appFolder
+            if(!appDirectory.exists()){
+                appDirectory.mkdir();
+            }
+
+            //create logFolder
+            if(!logDirectory.exists()){
+                logDirectory.mkdir();
+            }
+
+            //clear previous logcat and then write the new one to file
+            try{
+                Process process = Runtime.getRuntime().exec("logcat -c");
+                process = Runtime.getRuntime().exec("logcat -f " + logFile + " *:S MainActivity:D VideoActivity:D" );
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+        }
+
+
+
         setContentView(R.layout.activity_main);
         usbManager = (UsbManager) getSystemService(this.USB_SERVICE);
         startButton =findViewById(R.id.buttonStart);
@@ -110,11 +161,9 @@ public class MainActivity extends AppCompatActivity {
         filter.addAction(UsbManager.ACTION_USB_DEVICE_DETACHED);
         registerReceiver(broadcastReceiver, filter);
 
-        uris[0]= "asset:///audiovis_anim.mp4";
-        uris[1]= "asset:///eye_anim.mp4";
-        uris[2]= "asset:///fire_anim.mp4";
-        uris[3]= "asset:///girlpower.mp4";
-        uris[4]= "asset:///zumtobel.mp4";
+        uris[0]= "asset:///video_1.mp4";
+        uris[1]= "asset:///video_2.mp4";
+        uris[2]= "asset:///video_3.mp4";
 
     }
 
@@ -180,6 +229,8 @@ public class MainActivity extends AppCompatActivity {
                     actualVideo++;
                     actualVideo %= uris.length;
                 } else actualVideo = number;
+            tvAppend(textView, "starting video activity: "+number);
+
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {

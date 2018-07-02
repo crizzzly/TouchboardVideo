@@ -22,8 +22,8 @@ android {
     compileSdkVersion 27
     defaultConfig {
         applicationId "com.example.android.videoplayersample"
-        minSdkVersion 14
-        targetSdkVersion 27
+        minSdkVersion 19
+        targetSdkVersion 19
         versionCode 1
         versionName "1.0"
     }

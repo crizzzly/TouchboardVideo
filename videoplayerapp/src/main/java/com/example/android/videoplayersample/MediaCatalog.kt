@@ -34,9 +34,9 @@ open class MediaCatalog(private val list: MutableList<MediaDescriptionCompat>) :
                 with(MediaDescriptionCompat.Builder()) {
                     setDescription("MP4 loaded from assets folder")
                     setMediaId("1")
-                    setMediaUri(Uri.parse("asset:///audiovis_anim.mp4"))
+                    setMediaUri(Uri.parse("asset:///video_1.mp4"))
                     //setMediaUri(Uri.parse("http://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_320x180.mp4"))
-                    setTitle("visualisazion of waveforms")
+                    setTitle("Video 1")
                     setSubtitle("local video")
                     build()
                 })
@@ -44,8 +44,8 @@ open class MediaCatalog(private val list: MutableList<MediaDescriptionCompat>) :
                 with(MediaDescriptionCompat.Builder()) {
                     setDescription("MP4 loaded from assets folder")
                     setMediaId("2")
-                    setMediaUri(Uri.parse("asset:///eye_anim.mp4"))
-                    setTitle("animation looks like an eye")
+                    setMediaUri(Uri.parse("asset:///video_2.mp4"))
+                    setTitle("Video 2")
                     setSubtitle("local video")
                     build()
                 })
@@ -53,26 +53,8 @@ open class MediaCatalog(private val list: MutableList<MediaDescriptionCompat>) :
                 with(MediaDescriptionCompat.Builder()) {
                     setDescription("MP4 loaded from assets folder")
                     setMediaId("3")
-                    setMediaUri(Uri.parse("asset:///fire_anim.mp4"))
-                    setTitle("Led Strip Animation")
-                    setSubtitle("local video")
-                    build()
-                })
-        list.add(
-                with(MediaDescriptionCompat.Builder()) {
-                    setDescription("MP4 loaded from assets folder")
-                    setMediaId("4")
-                    setMediaUri(Uri.parse("asset:///girlpower.mp4"))
-                    setTitle("Led Strip Animation on acrylic glass")
-                    setSubtitle("local video")
-                    build()
-                })
-        list.add(
-                with(MediaDescriptionCompat.Builder()) {
-                    setDescription("MP4 loaded from assets folder")
-                    setMediaId("5")
-                    setMediaUri(Uri.parse("asset:///zumtobel.mp4"))
-                    setTitle("led programmed to song")
+                    setMediaUri(Uri.parse("asset:///video_3.mp4"))
+                    setTitle("Video 3")
                     setSubtitle("local video")
                     build()
                 })
